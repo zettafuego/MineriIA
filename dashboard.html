@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div id="app-root">
+    <div class="flex-between" style="flex-wrap:wrap;gap:1rem;margin-bottom:0.25rem">
+      <div>
+        <h1 class="page-title" id="dash-greeting">Hola</h1>
+        <p class="page-subtitle" style="margin-bottom:0">
+          <span id="dash-actividad">—</span> · <span id="dash-region">—</span>
+          · <span class="badge badge-neutral" id="dash-estado">Inicio</span>
+        </p>
+      </div>
+      <a href="diagnostico.html" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 1-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/>
+        </svg>
+        Realizar diagnóstico
+      </a>
+    </div>
+
+    <!-- Resumen IA -->
+    <div id="ai-summary-wrap" class="ai-banner mt-2 hidden animate-fade-up">
+      <div style="font-size:0.75rem;font-weight:600;color:var(--brand);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.04em">Análisis FormalizaAI</div>
+      <p id="ai-summary" style="margin:0;font-size:0.95rem;line-height:1.55"></p>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid-stats mt-3 stagger">
+      <div class="card stat-card">
+        <div class="stat-label">Formalización</div>
+        <div class="stat-value" id="dash-pct-label">0%</div>
+        <div class="progress-track mt-1 progress-lg">
+          <div class="progress-bar" id="dash-progress" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">Nivel de riesgo</div>
+        <div class="stat-value" id="stat-riesgo">—</div>
+        <div class="stat-sub">Según brechas documentales</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">Tiempo estimado</div>
+        <div class="stat-value" id="stat-tiempo" style="font-size:1.25rem">—</div>
+        <div class="stat-sub">Para cerrar pendientes</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">Costo aproximado</div>
+        <div class="stat-value" id="stat-costo" style="font-size:1rem">—</div>
+        <div class="stat-sub"><span id="stat-faltantes">—</span> docs. faltantes</div>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-3">
+      <!-- Ring + próximo paso -->
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Progreso de formalización</h2>
+          <div class="ring-wrap">
+            <canvas id="chart-ring" width="140" height="140" aria-label="Porcentaje de formalización"></canvas>
+            <div class="ring-center">
+              <div>
+                <div class="pct" id="ring-pct-mirror"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3" style="padding:1rem;background:var(--bg-muted);border-radius:12px">
+            <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.35rem">Próximo paso</div>
+            <div id="next-title" style="font-weight:650;margin-bottom:0.25rem">—</div>
+            <div id="next-desc" class="text-secondary" style="font-size:0.875rem">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alertas -->
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-between mb-2">
+            <h2 class="section-title" style="margin:0">Alertas</h2>
+            <a href="chat.html" class="btn btn-ghost btn-sm">Preguntar a la IA</a>
+          </div>
+          <div id="alerts-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio documental (resumen) -->
+    <div class="card mt-3" id="docs-summary-card">
+      <div class="card-body">
+        <div class="flex-between" style="flex-wrap:wrap;gap:0.75rem;margin-bottom:0.75rem">
+          <h2 class="section-title" style="margin:0">Gestión documental</h2>
+          <a href="documentos.html" class="btn btn-primary btn-sm">Abrir documentos</a>
+        </div>
+        <div class="grid-stats" style="margin-bottom:0.75rem">
+          <div class="stat-card" style="padding:0.75rem 0">
+            <div class="stat-label">Avance docs</div>
+            <div class="stat-value" id="dash-doc-pct" style="font-size:1.35rem">—</div>
+          </div>
+          <div class="stat-card" style="padding:0.75rem 0">
+            <div class="stat-label">Completos</div>
+            <div class="stat-value" id="dash-doc-ok" style="font-size:1.35rem">—</div>
+          </div>
+          <div class="stat-card" style="padding:0.75rem 0">
+            <div class="stat-label">Pendientes</div>
+            <div class="stat-value" id="dash-doc-pend" style="font-size:1.35rem">—</div>
+          </div>
+          <div class="stat-card" style="padding:0.75rem 0">
+            <div class="stat-label">Bloqueados</div>
+            <div class="stat-value" id="dash-doc-block" style="font-size:1.35rem">—</div>
+          </div>
+        </div>
+        <div id="dash-paquete" class="doc-chip-list"></div>
+        <p class="text-muted" style="font-size:0.8rem;margin:0.75rem 0 0" id="dash-doc-hint">
+          Tras el diagnóstico se genera un expediente referencial con anexos y plan 90 días.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-3" id="result-extra">
+      <!-- Checklist -->
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Checklist de formalización</h2>
+          <div id="checklist-list"></div>
+        </div>
+      </div>
+
+      <!-- Gráfico + pasos -->
+      <div>
+        <div class="card mb-2">
+          <div class="card-body">
+            <h2 class="section-title">Cumplimiento por requisito</h2>
+            <div class="chart-wrap">
+              <canvas id="chart-bars" aria-label="Gráfico de cumplimiento"></canvas>
+            </div>
+            <p class="text-muted" style="font-size:0.8rem;margin:0.75rem 0 0">
+              Se genera tras el diagnóstico. Verde = completo, ámbar = parcial, rojo = faltante.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="section-title">Próximos pasos</h2>
+            <div id="steps-list">
+              <div class="empty-state" style="padding:1rem">
+                <p class="text-secondary" style="font-size:0.9rem;margin:0">Completa el diagnóstico para ver tu plan priorizado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/documents.js"></script>
+  <script src="assets/js/diagnosis.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Layout.render({
+      page: 'dashboard',
+      breadcrumbs: [
+        { label: 'Inicio', href: 'dashboard.html' },
+        { label: 'Dashboard' },
+      ],
+    });
+  </script>
+  <script src="assets/js/pages/dashboard.js"></script>
+  <script>
+    // Sincronizar % en el centro del ring (texto)
+    const lbl = document.getElementById('dash-pct-label');
+    const mirror = document.getElementById('ring-pct-mirror');
+    if (lbl && mirror) mirror.textContent = lbl.textContent;
+  </script>
+</body>
+</html>

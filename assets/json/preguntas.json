@@ -1,0 +1,141 @@
+{
+  "version": "1.0",
+  "titulo": "Diagnóstico Inteligente de Formalización",
+  "descripcion": "Responde con honestidad. Cuanto más preciso seas, mejor será el plan de formalización.",
+  "preguntas": [
+    {
+      "id": "p1",
+      "orden": 1,
+      "texto": "¿Qué tipo de minería realiza?",
+      "tipo": "single",
+      "campo": "tipoMineria",
+      "ayuda": "Define el régimen aplicable: pequeña minería o minería artesanal.",
+      "opciones": [
+        { "id": "pequena", "label": "Pequeña Minería", "descripcion": "Hasta 2,000 ha y 350 TM/día", "icon": "mountain" },
+        { "id": "artesanal", "label": "Minería Artesanal", "descripcion": "Hasta 1,000 ha y 25 TM/día", "icon": "pickaxe" },
+        { "id": "consultor", "label": "Consultor / Asesor", "descripcion": "Brindo servicios a productores", "icon": "briefcase" }
+      ]
+    },
+    {
+      "id": "p2",
+      "orden": 2,
+      "texto": "¿En qué región opera?",
+      "tipo": "single",
+      "campo": "region",
+      "ayuda": "Algunas regiones tienen ventanillas y plazos diferenciados.",
+      "opciones": [
+        { "id": "puno", "label": "Puno" },
+        { "id": "arequipa", "label": "Arequipa" },
+        { "id": "cusco", "label": "Cusco" },
+        { "id": "madre-de-dios", "label": "Madre de Dios" },
+        { "id": "ayacucho", "label": "Ayacucho" },
+        { "id": "apurimac", "label": "Apurímac" },
+        { "id": "la-libertad", "label": "La Libertad" },
+        { "id": "otra", "label": "Otra región" }
+      ]
+    },
+    {
+      "id": "p3",
+      "orden": 3,
+      "texto": "¿Cuenta con RUC?",
+      "tipo": "boolean",
+      "campo": "tieneRuc",
+      "ayuda": "El RUC es el primer paso para operar formalmente ante SUNAT.",
+      "opciones": [
+        { "id": "si", "label": "Sí", "valor": true },
+        { "id": "no", "label": "No", "valor": false }
+      ]
+    },
+    {
+      "id": "p4",
+      "orden": 4,
+      "texto": "¿Tiene REINFO?",
+      "tipo": "boolean",
+      "campo": "tieneReinfo",
+      "ayuda": "Registro Integral de Formalización Minera (MINEM).",
+      "opciones": [
+        { "id": "si", "label": "Sí, vigente", "valor": true },
+        { "id": "no", "label": "No tengo", "valor": false },
+        { "id": "vencido", "label": "Tengo pero está vencido", "valor": "vencido" }
+      ]
+    },
+    {
+      "id": "p5",
+      "orden": 5,
+      "texto": "¿Tiene contrato de explotación?",
+      "tipo": "boolean",
+      "campo": "tieneContrato",
+      "ayuda": "Contrato con el titular de la concesión minera.",
+      "opciones": [
+        { "id": "si", "label": "Sí", "valor": true },
+        { "id": "no", "label": "No", "valor": false },
+        { "id": "proceso", "label": "En negociación", "valor": "proceso" }
+      ]
+    },
+    {
+      "id": "p6",
+      "orden": 6,
+      "texto": "¿Tiene IGAFOM?",
+      "tipo": "boolean",
+      "campo": "tieneIgafom",
+      "ayuda": "Instrumento de Gestión Ambiental para Formalización de Pequeña Minería y Minería Artesanal.",
+      "opciones": [
+        { "id": "si", "label": "Sí, aprobado", "valor": true },
+        { "id": "no", "label": "No", "valor": false },
+        { "id": "tramite", "label": "En trámite", "valor": "tramite" }
+      ]
+    },
+    {
+      "id": "p7",
+      "orden": 7,
+      "texto": "¿Cuántos trabajadores tiene?",
+      "tipo": "single",
+      "campo": "numTrabajadores",
+      "ayuda": "Impacta en plan de seguridad, ESSALUD y obligaciones laborales.",
+      "opciones": [
+        { "id": "1-5", "label": "1 a 5", "valor": 5 },
+        { "id": "6-15", "label": "6 a 15", "valor": 15 },
+        { "id": "16-50", "label": "16 a 50", "valor": 50 },
+        { "id": "50+", "label": "Más de 50", "valor": 80 }
+      ]
+    },
+    {
+      "id": "p8",
+      "orden": 8,
+      "texto": "¿Usa explosivos?",
+      "tipo": "boolean",
+      "campo": "usaExplosivos",
+      "ayuda": "Requiere autorización de SUCAMEC y polvorín autorizado.",
+      "opciones": [
+        { "id": "si", "label": "Sí", "valor": true },
+        { "id": "no", "label": "No", "valor": false }
+      ]
+    },
+    {
+      "id": "p9",
+      "orden": 9,
+      "texto": "¿Cuenta con Instrumento Ambiental?",
+      "tipo": "boolean",
+      "campo": "tieneInstrumentoAmbiental",
+      "ayuda": "DIA, EIA-sd u otro instrumento según escala de la operación.",
+      "opciones": [
+        { "id": "si", "label": "Sí", "valor": true },
+        { "id": "no", "label": "No", "valor": false },
+        { "id": "tramite", "label": "En elaboración", "valor": "tramite" }
+      ]
+    },
+    {
+      "id": "p10",
+      "orden": 10,
+      "texto": "¿Tiene supervisor de seguridad?",
+      "tipo": "boolean",
+      "campo": "tieneSupervisorSeguridad",
+      "ayuda": "Obligatorio según DS 024-2016-EM y normas de seguridad minera.",
+      "opciones": [
+        { "id": "si", "label": "Sí, registrado", "valor": true },
+        { "id": "no", "label": "No", "valor": false },
+        { "id": "parcial", "label": "Sí, pero sin registro formal", "valor": "parcial" }
+      ]
+    }
+  ]
+}

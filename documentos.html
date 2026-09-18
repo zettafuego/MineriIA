@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Gestión documental y expediente referencial FormalizaAI" />
+  <title>Documentos · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div id="app-root">
+    <div class="flex-between" style="flex-wrap:wrap;gap:1rem;margin-bottom:0.25rem">
+      <div>
+        <h1 class="page-title">Gestión documental</h1>
+        <p class="page-subtitle" style="margin-bottom:0">
+          Catálogo base, dependencias y expediente referencial generado automáticamente.
+        </p>
+      </div>
+      <div class="flex gap-2" style="flex-wrap:wrap">
+        <button type="button" class="btn btn-secondary" id="btn-regen-exp">
+          Regenerar expediente
+        </button>
+        <button type="button" class="btn btn-secondary" id="btn-export-exp">
+          Copiar texto
+        </button>
+        <button type="button" class="btn btn-secondary" id="btn-dl-exp-pdf" title="Descargar expediente en PDF">
+          PDF expediente
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-dl-exp-docx" title="Descargar expediente en Word">
+          Word expediente
+        </button>
+      </div>
+    </div>
+
+    <!-- Plantillas descargables -->
+    <div class="card mt-3" id="templates-card">
+      <div class="card-body">
+        <div class="flex-between" style="flex-wrap:wrap;gap:0.75rem;margin-bottom:0.5rem">
+          <div>
+            <h2 class="section-title" style="margin:0">Plantillas descargables</h2>
+            <p class="text-secondary" style="font-size:0.85rem;margin:0.35rem 0 0">
+              Fichas PDF y DOCX rellenadas con tus datos, checklist y anexos. Referenciales (no oficiales).
+            </p>
+          </div>
+        </div>
+        <div id="templates-list" class="templates-grid"></div>
+      </div>
+    </div>
+
+    <!-- Stats documentales -->
+    <div class="grid-stats mt-3 stagger" id="doc-stats">
+      <div class="card stat-card">
+        <div class="stat-label">Avance documental</div>
+        <div class="stat-value" id="stat-doc-pct">0%</div>
+        <div class="progress-track mt-1">
+          <div class="progress-bar" id="stat-doc-bar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">Completos</div>
+        <div class="stat-value" id="stat-doc-ok">0</div>
+        <div class="stat-sub"><span id="stat-doc-total">0</span> en portfolio</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">Pendientes / proceso</div>
+        <div class="stat-value" id="stat-doc-pend">0</div>
+        <div class="stat-sub"><span id="stat-doc-proc">0</span> en proceso</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">Bloqueados · Anexos</div>
+        <div class="stat-value" id="stat-doc-block">0</div>
+        <div class="stat-sub"><span id="stat-doc-anexos">0</span> anexos sugeridos</div>
+      </div>
+    </div>
+
+    <!-- Expediente portada -->
+    <div class="ai-banner mt-3" id="exp-banner">
+      <div class="flex-between" style="flex-wrap:wrap;gap:0.75rem">
+        <div>
+          <div style="font-size:0.75rem;font-weight:600;color:var(--brand);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.04em">
+            Expediente referencial automático
+          </div>
+          <p id="exp-portada" style="margin:0;font-size:0.95rem;line-height:1.55">
+            Completa el diagnóstico o genera el portfolio base para armar tu expediente.
+          </p>
+        </div>
+        <a href="diagnostico.html" class="btn btn-ghost btn-sm" id="exp-diag-link">Ir al diagnóstico</a>
+      </div>
+    </div>
+
+    <!-- Paquete mínimo + etapas -->
+    <div class="grid-2 mt-3">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Paquete mínimo base</h2>
+          <p class="text-secondary" style="font-size:0.85rem;margin:0 0 1rem">
+            Documentos núcleo del proceso de formalización. Se marcan al completar el diagnóstico o manualmente.
+          </p>
+          <div id="paquete-minimo" class="doc-chip-list"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Avance por etapa del expediente</h2>
+          <div id="etapas-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan 90 días -->
+    <div class="card mt-3">
+      <div class="card-body">
+        <h2 class="section-title">Plan referencial 90 días</h2>
+        <div id="plan90" class="plan90-grid"></div>
+      </div>
+    </div>
+
+    <!-- Filtros + listado -->
+    <div class="card mt-3">
+      <div class="card-body">
+        <div class="flex-between" style="flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem">
+          <h2 class="section-title" style="margin:0">Portfolio de documentos</h2>
+          <div class="doc-filters">
+            <select id="filter-estado" class="form-input" style="width:auto;min-width:140px">
+              <option value="all">Todos los estados</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="en_proceso">En proceso</option>
+              <option value="completo">Completo</option>
+              <option value="vencido">Vencido</option>
+              <option value="bloqueado">Bloqueados</option>
+              <option value="referencial">Referenciales</option>
+            </select>
+            <select id="filter-categoria" class="form-input" style="width:auto;min-width:150px">
+              <option value="all">Todas las categorías</option>
+            </select>
+          </div>
+        </div>
+        <div id="docs-list" class="docs-list"></div>
+      </div>
+    </div>
+
+    <!-- Anexos referenciales globales -->
+    <div class="card mt-3">
+      <div class="card-body">
+        <h2 class="section-title">Anexos referenciales sugeridos (automáticos)</h2>
+        <p class="text-secondary" style="font-size:0.85rem;margin:0 0 1rem">
+          Se generan según documentos pendientes: son piezas de apoyo del expediente, no el trámite principal.
+        </p>
+        <div id="anexos-list" class="anexos-list"></div>
+      </div>
+    </div>
+
+    <!-- Detalle modal simple -->
+    <div id="doc-detail-modal" class="doc-modal hidden" role="dialog" aria-modal="true" aria-labelledby="doc-detail-title">
+      <div class="doc-modal-backdrop" data-close-modal></div>
+      <div class="doc-modal-panel">
+        <div class="flex-between" style="margin-bottom:0.75rem">
+          <h2 id="doc-detail-title" class="section-title" style="margin:0">Documento</h2>
+          <button type="button" class="btn-icon" data-close-modal aria-label="Cerrar">×</button>
+        </div>
+        <div id="doc-detail-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/diagnosis.js"></script>
+  <script src="assets/js/documents.js"></script>
+  <script src="assets/js/templates.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Layout.render({
+      page: 'documentos',
+      breadcrumbs: [
+        { label: 'Inicio', href: 'dashboard.html' },
+        { label: 'Documentos' },
+      ],
+    });
+  </script>
+  <script src="assets/js/pages/documentos.js"></script>
+</body>
+</html>

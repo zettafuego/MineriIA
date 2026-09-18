@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div id="app-root">
+    <h1 class="page-title">Perfil</h1>
+    <p class="page-subtitle">Datos de tu cuenta y estado de formalización.</p>
+
+    <div class="grid-2">
+      <!-- Resumen -->
+      <div class="card">
+        <div class="card-body" style="text-align:center">
+          <div class="avatar avatar-lg" id="perfil-initials" style="margin:0 auto 1rem">U</div>
+          <h2 id="perfil-nombre" style="margin:0 0 0.25rem;font-size:1.25rem">—</h2>
+          <p id="perfil-email" class="text-secondary" style="margin:0 0 1rem;font-size:0.9rem">—</p>
+          <div style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap">
+            <span class="badge badge-info" id="perfil-estado">Inicio</span>
+            <span class="badge badge-success" id="perfil-pct">0%</span>
+          </div>
+          <div class="divider"></div>
+          <div style="text-align:left;display:grid;gap:0.75rem;font-size:0.9rem">
+            <div class="flex-between">
+              <span class="text-muted">Región</span>
+              <strong id="perfil-region-view">—</strong>
+            </div>
+            <div class="flex-between">
+              <span class="text-muted">Actividad</span>
+              <strong id="perfil-actividad-view">—</strong>
+            </div>
+            <div class="flex-between">
+              <span class="text-muted">Registro</span>
+              <strong id="perfil-fecha">—</strong>
+            </div>
+          </div>
+
+          <div id="perfil-diag-wrap" class="hidden mt-2" style="text-align:left;padding:1rem;background:var(--bg-muted);border-radius:12px">
+            <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);margin-bottom:0.5rem">ÚLTIMO DIAGNÓSTICO</div>
+            <div class="flex-between" style="font-size:0.85rem;margin-bottom:0.35rem">
+              <span class="text-secondary">Fecha</span>
+              <span id="perfil-diag-date">—</span>
+            </div>
+            <div class="flex-between" style="font-size:0.85rem">
+              <span class="text-secondary">Riesgo</span>
+              <span id="perfil-diag-risk">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editar -->
+      <div class="card">
+        <div class="card-body">
+          <h2 class="section-title">Editar datos</h2>
+          <form id="form-perfil">
+            <div class="form-group">
+              <label class="form-label" for="perfil-nombre-input">Nombre</label>
+              <input class="form-input" type="text" id="perfil-nombre-input" name="nombre" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="perfil-email-input">Email</label>
+              <input class="form-input" type="email" id="perfil-email-input" name="email" disabled />
+              <p class="form-hint">El email no se puede cambiar en este MVP.</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="perfil-telefono">Teléfono</label>
+              <input class="form-input" type="tel" id="perfil-telefono" name="telefono" placeholder="+51 …" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="perfil-empresa">Empresa / Organización</label>
+              <input class="form-input" type="text" id="perfil-empresa" name="empresa" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="perfil-region">Región</label>
+              <input class="form-input" type="text" id="perfil-region" name="region" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="perfil-actividad">Actividad</label>
+              <input class="form-input" type="text" id="perfil-actividad" name="actividad" />
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/diagnosis.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Layout.render({
+      page: 'perfil',
+      breadcrumbs: [
+        { label: 'Inicio', href: 'dashboard.html' },
+        { label: 'Perfil' },
+      ],
+    });
+  </script>
+  <script src="assets/js/pages/perfil.js"></script>
+</body>
+</html>

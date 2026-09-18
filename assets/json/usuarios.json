@@ -1,0 +1,44 @@
+[
+  {
+    "id": "usr-001",
+    "nombre": "Carlos Mendoza",
+    "email": "carlos@mineria.pe",
+    "password": "demo1234",
+    "region": "Puno",
+    "actividad": "Pequeña Minería",
+    "estado": "En formalización",
+    "porcentaje": 45,
+    "telefono": "+51 987 654 321",
+    "empresa": "Minera Andina SAC",
+    "fechaRegistro": "2026-01-15",
+    "avatar": null
+  },
+  {
+    "id": "usr-002",
+    "nombre": "María Quispe",
+    "email": "maria@consultora.pe",
+    "password": "demo1234",
+    "region": "Arequipa",
+    "actividad": "Consultoría Minera",
+    "estado": "Formalizado",
+    "porcentaje": 92,
+    "telefono": "+51 912 345 678",
+    "empresa": "Consultora Quispe EIRL",
+    "fechaRegistro": "2025-11-03",
+    "avatar": null
+  },
+  {
+    "id": "usr-003",
+    "nombre": "José Huamán",
+    "email": "jose@artesanal.pe",
+    "password": "demo1234",
+    "region": "Madre de Dios",
+    "actividad": "Minería Artesanal",
+    "estado": "Inicio",
+    "porcentaje": 15,
+    "telefono": "+51 945 111 222",
+    "empresa": "Cooperativa El Dorado",
+    "fechaRegistro": "2026-03-20",
+    "avatar": null
+  }
+]

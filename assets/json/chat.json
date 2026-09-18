@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "asistente": {
+    "nombre": "FormalizaAI",
+    "rol": "Asistente de formalización minera",
+    "saludo": "Hola. Soy FormalizaAI, tu asistente de formalización minera en Perú. Puedo explicarte requisitos, plazos y pasos. ¿En qué te ayudo?"
+  },
+  "sugerencias": [
+    "¿Qué es el IGAFOM?",
+    "¿Cómo obtengo mi RUC?",
+    "¿Qué es un pequeño productor minero?",
+    "¿Qué diferencia hay con un minero artesanal?",
+    "¿Qué es el REINFO?",
+    "¿Cuánto demora formalizarse?"
+  ],
+  "respuestas": [
+    {
+      "keywords": ["igafom", "instrumento de gestión ambiental"],
+      "respuesta": "El **IGAFOM** (Instrumento de Gestión Ambiental para la Formalización de Actividades de Pequeña Minería y Minería Artesanal) es el estudio ambiental simplificado que deben presentar los productores en proceso de formalización.\n\n**Incluye:**\n- Descripción de la actividad y ubicación\n- Identificación de impactos ambientales\n- Medidas de prevención y mitigación\n- Plan de manejo ambiental\n\n**Se presenta ante** la Dirección Regional de Energía y Minas (DREM) de tu región.\n\n**Tiempo estimado:** 60–120 días según la carga de la entidad y la calidad del expediente.\n\n**Tip FormalizaAI:** No inicies operaciones sin IGAFOM o instrumento ambiental vigente; es uno de los puntos más observados en fiscalizaciones."
+    },
+    {
+      "keywords": ["ruc", "sunat", "contribuyente"],
+      "respuesta": "El **RUC** (Registro Único de Contribuyentes) es el número de identificación tributaria ante SUNAT.\n\n**Cómo obtenerlo:**\n1. Ingresa a SUNAT Operaciones en Línea o acude a un centro de servicios\n2. Presenta DNI (persona natural) o documentos de constitución (persona jurídica)\n3. Declara tu actividad económica (incluye códigos de minería)\n4. Obtén tu clave SOL\n\n**Costo:** Gratuito o muy bajo (copias/notarías si aplica).\n**Tiempo:** Suele resolverse en 1–3 días hábiles.\n\n**Importante:** Sin RUC no puedes emitir comprobantes, contratar formalmente ni avanzar en REINFO e IGAFOM."
+    },
+    {
+      "keywords": ["pequeño productor", "pequeña minería", "ppm"],
+      "respuesta": "Un **pequeño productor minero (PPM)** opera bajo el régimen de pequeña minería, con límites mayores que la minería artesanal.\n\n**Referencia típica (marco general):**\n- Concesión / área: hasta **2,000 hectáreas**\n- Capacidad de producción / beneficio: hasta **350 TM/día**\n\n**Implicancias:**\n- Mayor escala operativa y obligaciones ambientales/seguridad\n- Puede requerir instrumentos ambientales más robustos\n- Debe cumplir REINFO (si está en formalización), contrato de explotación, seguridad minera y tributación\n\nUsa el **Diagnóstico Inteligente** de FormalizaAI para mapear exactamente qué te falta según tu escala."
+    },
+    {
+      "keywords": ["artesanal", "minero artesanal", "diferencia", "diferencia hay"],
+      "respuesta": "La diferencia principal entre **pequeña minería** y **minería artesanal** es la **escala**:\n\n| Aspecto | Minería Artesanal | Pequeña Minería |\n|---------|-------------------|-----------------|\n| Área aprox. | Hasta 1,000 ha | Hasta 2,000 ha |\n| Capacidad | Hasta 25 TM/día | Hasta 350 TM/día |\n| Complejidad | Menor | Mayor |\n| Instrumentos | IGAFOM / simplificados | IGAFOM + posibles EIA |\n\nAmbos pueden formalizarse, pero los **requisitos, costos y plazos** cambian. FormalizaAI calcula un plan distinto según el tipo que indiques en el diagnóstico."
+    },
+    {
+      "keywords": ["reinfo", "registro integral", "formalización minera"],
+      "respuesta": "El **REINFO** es el **Registro Integral de Formalización Minera** administrado en el marco del proceso de formalización del MINEM y gobiernos regionales.\n\n**Para qué sirve:**\n- Acredita que estás en proceso de formalización\n- Es puerta de entrada a trámites posteriores (IGAFOM, contrato, etc.)\n- Puede habilitar acceso a beneficios o plazos del régimen de formalización\n\n**Si está vencido:** prioriza su regularización; muchos trámites posteriores se bloquean sin REINFO vigente.\n\n**Siguiente paso recomendado:** verifica tu estado en la DREM de tu región y completa la documentación pendiente del padrón."
+    },
+    {
+      "keywords": ["demora", "tiempo", "plazo", "cuánto demora", "cuanto demora"],
+      "respuesta": "El tiempo de formalización **varía mucho** según región, documentos previos y calidad del expediente.\n\n**Rangos orientativos (MVP FormalizaAI):**\n- Con RUC + REINFO + contrato listos: **3–6 meses**\n- Sin IGAFOM ni instrumento ambiental: **6–18 meses**\n- Caso crítico (casi sin documentos): **12–24 meses**\n\n**Lo que más alarga el proceso:**\n1. IGAFOM / instrumento ambiental incompleto\n2. Contrato de explotación sin firmar\n3. Observaciones de la DREM sin respuesta a tiempo\n\nHaz el diagnóstico en la app: te damos un **tiempo estimado personalizado** y un checklist priorizado."
+    },
+    {
+      "keywords": ["explosivo", "sucamec", "polvorín"],
+      "respuesta": "Si usas **explosivos**, necesitas autorización de **SUCAMEC** y cumplir normas de almacenamiento (polvorín), transporte y personal capacitado.\n\n**Requisitos frecuentes:**\n- Solicitud y requisitos técnicos del polvorín\n- Personal calificado / certificados\n- Planes de seguridad y control de inventarios\n- Coordinación con la operación minera formalizada\n\n**Tiempo estimado:** 30–90 días según complejidad.\n**Costo orientativo:** S/ 2,000 – 8,000 (sin contar infraestructura del polvorín).\n\nSi en el diagnóstico marcaste que usas explosivos, FormalizaAI lo incluye en tu plan y costo estimado."
+    },
+    {
+      "keywords": ["supervisor", "seguridad", "plan de seguridad"],
+      "respuesta": "La normativa de seguridad minera exige **gestión de seguridad y salud ocupacional**, incluyendo roles como **supervisor de seguridad** según el tamaño y tipo de operación.\n\n**Buenas prácticas de formalización:**\n- Designar supervisor con competencias y, de ser el caso, registro formal\n- Contar con **Plan de Seguridad y Salud Ocupacional**\n- Capacitación, EPP, reportes de incidentes y auditorías internas\n\nSin estos elementos, el riesgo fiscalizador y de accidentes se eleva, y puede retrasar la formalización."
+    },
+    {
+      "keywords": ["contrato", "explotación", "concesión"],
+      "respuesta": "El **contrato de explotación** vincula al productor en formalización con el **titular de la concesión minera**.\n\n**Por qué es crítico:**\n- Sin título o contrato, la operación no tiene base legal plena\n- Suele ser requisito para avanzar IGAFOM y otros trámites\n\n**Recomendaciones:**\n1. Identifica al titular de la concesión (INGEMMET / padrones)\n2. Negocia condiciones claras (plazo, regalías, áreas)\n3. Formaliza ante notario y registra según corresponda\n\n**Tiempo típico de negociación:** 30–90 días."
+    },
+    {
+      "keywords": ["costo", "cuánto cuesta", "precio", "presupuesto"],
+      "respuesta": "Los costos de formalización dependen de tu punto de partida. En FormalizaAI usamos rangos orientativos:\n\n| Concepto | Rango aprox. (S/) |\n|----------|-------------------|\n| RUC | 0 – 50 |\n| REINFO / gestiones | 200 – 800 |\n| Contrato / notaría | 1,500 – 5,000 |\n| IGAFOM | 3,000 – 12,000 |\n| Instrumento ambiental | 5,000 – 25,000 |\n| Plan de seguridad | 800 – 3,500 |\n| Explosivos (si aplica) | 2,000 – 8,000 |\n\nEl **Diagnóstico Inteligente** suma solo lo que te falta y te da un **costo aproximado** para planificar."
+    },
+    {
+      "keywords": ["hola", "buenos días", "buenas", "ayuda", "help"],
+      "respuesta": "¡Hola! Puedo ayudarte con:\n\n- Explicar **RUC, REINFO, IGAFOM**, contratos y seguridad\n- Diferencias entre **pequeña minería** y **minería artesanal**\n- Plazos y costos orientativos\n- Cómo interpretar tu **diagnóstico** y checklist\n\nPrueba una pregunta de las sugerencias o escribe lo que necesites. También puedes ir a **Diagnóstico** para un plan personalizado."
+    }
+  ],
+  "fallback": "No tengo una respuesta exacta para eso en este MVP, pero puedo orientarte sobre RUC, REINFO, IGAFOM, contratos, seguridad minera, plazos y costos.\n\nReformula tu pregunta o elige una sugerencia. Para un plan a tu medida, completa el **Diagnóstico Inteligente**."
+}

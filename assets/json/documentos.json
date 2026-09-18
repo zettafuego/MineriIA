@@ -1,0 +1,434 @@
+{
+  "version": "2.0",
+  "categorias": [
+    { "id": "tributario", "label": "Tributario", "orden": 1, "color": "blue" },
+    { "id": "minero", "label": "Minero / REINFO", "orden": 2, "color": "teal" },
+    { "id": "legal", "label": "Legal / Contractual", "orden": 3, "color": "indigo" },
+    { "id": "ambiental", "label": "Ambiental", "orden": 4, "color": "emerald" },
+    { "id": "seguridad", "label": "Seguridad minera", "orden": 5, "color": "amber" },
+    { "id": "laboral", "label": "Laboral / Social", "orden": 6, "color": "orange" },
+    { "id": "referencial", "label": "Expediente referencial", "orden": 7, "color": "violet" }
+  ],
+  "etapasExpediente": [
+    { "id": "base", "label": "Base legal y tributaria", "orden": 1 },
+    { "id": "minero", "label": "Registro minero", "orden": 2 },
+    { "id": "contractual", "label": "Derechos y contratos", "orden": 3 },
+    { "id": "ambiental", "label": "Gestión ambiental", "orden": 4 },
+    { "id": "operativo", "label": "Seguridad y operación", "orden": 5 },
+    { "id": "laboral", "label": "Personal y obligaciones", "orden": 6 }
+  ],
+  "documentos": [
+    {
+      "id": "doc-ruc",
+      "codigo": "RUC",
+      "nombre": "Constancia RUC / ficha RUC",
+      "categoria": "tributario",
+      "etapa": "base",
+      "requerido": true,
+      "validezMeses": 12,
+      "prioridad": 1,
+      "peso": 12,
+      "entidad": "SUNAT",
+      "url": "https://www.sunat.gob.pe",
+      "campoDiagnostico": "tieneRuc",
+      "descripcion": "Identificación tributaria activa. Base de todo trámite formal.",
+      "norma": "Código Tributario / Ley del RUC",
+      "dependeDe": [],
+      "desbloquea": ["REINFO", "CONTRATO", "ESSALUD", "PADRON"],
+      "anexosReferenciales": [
+        "Copia DNI del titular o representante",
+        "Vigencia de poder (persona jurídica)",
+        "Comprobante de domicilio fiscal"
+      ],
+      "checklistTramite": [
+        "Verificar RUC activo en consulta SUNAT",
+        "Actualizar actividad económica CIIU minera",
+        "Confirmar domicilio fiscal vigente",
+        "Descargar ficha RUC actualizada"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — RUC",
+        "secciones": ["Datos del contribuyente", "Actividad económica", "Representante legal", "Constancia adjunta"]
+      }
+    },
+    {
+      "id": "doc-reinfo",
+      "codigo": "REINFO",
+      "nombre": "Constancia REINFO vigente",
+      "categoria": "minero",
+      "etapa": "minero",
+      "requerido": true,
+      "validezMeses": 12,
+      "prioridad": 2,
+      "peso": 18,
+      "entidad": "MINEM / DREM",
+      "url": "https://www.minem.gob.pe",
+      "campoDiagnostico": "tieneReinfo",
+      "descripcion": "Registro Integral de Formalización Minera. Puerta de entrada al proceso de formalización.",
+      "norma": "DL 1336 y modificatorias / normas REINFO",
+      "dependeDe": ["RUC"],
+      "desbloquea": ["IGAFOM", "IA", "CONTRATO"],
+      "anexosReferenciales": [
+        "Declaración jurada de ubicación de la operación",
+        "Croquis o coordenadas UTM del área",
+        "Copia de REINFO anterior (si renovación)"
+      ],
+      "checklistTramite": [
+        "Validar vigencia en padrones MINEM/DREM",
+        "Confirmar datos de área y régimen (PPM/MA)",
+        "Revisar observaciones o suspensión",
+        "Programar renovación 60 días antes del vencimiento"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — REINFO",
+        "secciones": ["N° de registro", "Régimen", "Área / coordenadas", "Estado de vigencia", "Observaciones DREM"]
+      }
+    },
+    {
+      "id": "doc-contrato",
+      "codigo": "CONTRATO",
+      "nombre": "Contrato de explotación / cesión",
+      "categoria": "legal",
+      "etapa": "contractual",
+      "requerido": true,
+      "validezMeses": 24,
+      "prioridad": 3,
+      "peso": 15,
+      "entidad": "Titular / Notaría",
+      "url": null,
+      "campoDiagnostico": "tieneContrato",
+      "descripcion": "Vínculo formal con el titular de la concesión minera.",
+      "norma": "Ley General de Minería / Código Civil (contratos)",
+      "dependeDe": ["RUC", "REINFO"],
+      "desbloquea": ["IGAFOM", "EXPLOSIVOS"],
+      "anexosReferenciales": [
+        "Copia de título de concesión minera",
+        "Poderes de las partes",
+        "Plano del área de explotación",
+        "Minuta y testimonio notarial (si aplica)"
+      ],
+      "checklistTramite": [
+        "Identificar titular y estado de la concesión",
+        "Negociar vigencia, regalías y obligaciones",
+        "Revisar cláusulas ambientales y de seguridad",
+        "Formalizar ante notario si se requiere"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — Contrato",
+        "secciones": ["Partes", "Concesión", "Vigencia", "Obligaciones", "Anexos cartográficos"]
+      }
+    },
+    {
+      "id": "doc-igafom",
+      "codigo": "IGAFOM",
+      "nombre": "Resolución / IGAFOM aprobado",
+      "categoria": "ambiental",
+      "etapa": "ambiental",
+      "requerido": true,
+      "validezMeses": 36,
+      "prioridad": 4,
+      "peso": 18,
+      "entidad": "DREM / GORE",
+      "url": null,
+      "campoDiagnostico": "tieneIgafom",
+      "descripcion": "Instrumento de Gestión Ambiental para Formalización de pequeña minería y minería artesanal.",
+      "norma": "Normativa ambiental minera / reglamentos IGAFOM",
+      "dependeDe": ["RUC", "REINFO", "CONTRATO"],
+      "desbloquea": ["IA"],
+      "anexosReferenciales": [
+        "Línea base ambiental simplificada",
+        "Plan de manejo ambiental",
+        "Mapa de componentes y efluentes",
+        "Compromisos de remediación"
+      ],
+      "checklistTramite": [
+        "Contratar consultor ambiental acreditado",
+        "Levantar información de campo",
+        "Presentar expediente ante DREM",
+        "Absolver observaciones hasta resolución"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — IGAFOM",
+        "secciones": ["Identificación del proyecto", "Impactos", "Medidas de manejo", "Cronograma", "Resolución"]
+      }
+    },
+    {
+      "id": "doc-ia",
+      "codigo": "IA",
+      "nombre": "Instrumento ambiental (DIA / EIA-sd)",
+      "categoria": "ambiental",
+      "etapa": "ambiental",
+      "requerido": true,
+      "validezMeses": 36,
+      "prioridad": 5,
+      "peso": 12,
+      "entidad": "SENACE / DREM",
+      "url": null,
+      "campoDiagnostico": "tieneInstrumentoAmbiental",
+      "descripcion": "Instrumento ambiental aplicable según escala y tipología de la operación.",
+      "norma": "Ley del SEIA / reglamentos ambientales mineros",
+      "dependeDe": ["RUC", "REINFO", "IGAFOM"],
+      "desbloquea": [],
+      "anexosReferenciales": [
+        "Términos de referencia",
+        "Estudio de impacto o declaración",
+        "Plan de cierre conceptual",
+        "Participación ciudadana (si aplica)"
+      ],
+      "checklistTramite": [
+        "Definir tipología (DIA / EIA-sd / otro)",
+        "Elaborar con consultor registrado",
+        "Presentar ante autoridad competente",
+        "Seguimiento de observaciones"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — Instrumento Ambiental",
+        "secciones": ["Tipología", "Autoridad", "Estado del trámite", "Resolución / vigencia"]
+      }
+    },
+    {
+      "id": "doc-plan-seg",
+      "codigo": "PLAN_SEG",
+      "nombre": "Plan de Seguridad y Salud Ocupacional",
+      "categoria": "seguridad",
+      "etapa": "operativo",
+      "requerido": true,
+      "validezMeses": 12,
+      "prioridad": 6,
+      "peso": 10,
+      "entidad": "MINEM / Empresa",
+      "url": null,
+      "campoDiagnostico": "tieneSupervisorSeguridad",
+      "descripcion": "Plan SSO en minería alineado a normativa de seguridad minera.",
+      "norma": "DS 024-2016-EM y modificatorias",
+      "dependeDe": ["RUC"],
+      "desbloquea": ["SUPERVISOR", "EXPLOSIVOS"],
+      "anexosReferenciales": [
+        "Matriz IPERC",
+        "Procedimientos de trabajo seguro",
+        "Programa de capacitaciones",
+        "Plan de emergencias y evacuación"
+      ],
+      "checklistTramite": [
+        "Identificar peligros y riesgos operativos",
+        "Redactar plan SSO minero",
+        "Difundir al personal y registrar asistencia",
+        "Actualizar anualmente o ante cambios relevantes"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — Plan SSO",
+        "secciones": ["Política SSO", "IPERC", "Controles", "Capacitación", "Emergencias"]
+      }
+    },
+    {
+      "id": "doc-supervisor",
+      "codigo": "SUPERVISOR",
+      "nombre": "Registro de supervisor de seguridad",
+      "categoria": "seguridad",
+      "etapa": "operativo",
+      "requerido": true,
+      "validezMeses": 24,
+      "prioridad": 7,
+      "peso": 8,
+      "entidad": "MINEM",
+      "url": null,
+      "campoDiagnostico": "tieneSupervisorSeguridad",
+      "descripcion": "Supervisor de seguridad minera con registro vigente.",
+      "norma": "DS 024-2016-EM",
+      "dependeDe": ["PLAN_SEG"],
+      "desbloquea": [],
+      "anexosReferenciales": [
+        "CV y títulos del supervisor",
+        "Constancia de capacitación vigente",
+        "Contrato o designación formal"
+      ],
+      "checklistTramite": [
+        "Designar supervisor calificado",
+        "Verificar registro MINEM",
+        "Documentar funciones y horarios de supervisión",
+        "Renovar capacitaciones antes del vencimiento"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — Supervisor",
+        "secciones": ["Datos del supervisor", "N° registro", "Vigencia", "Designación"]
+      }
+    },
+    {
+      "id": "doc-explosivos",
+      "codigo": "EXPLOSIVOS",
+      "nombre": "Autorización de explosivos (SUCAMEC)",
+      "categoria": "seguridad",
+      "etapa": "operativo",
+      "requerido": false,
+      "condicional": true,
+      "condicionCampo": "usaExplosivos",
+      "validezMeses": 12,
+      "prioridad": 8,
+      "peso": 7,
+      "entidad": "SUCAMEC",
+      "url": "https://www.sucamec.gob.pe",
+      "campoDiagnostico": "usaExplosivos",
+      "descripcion": "Permiso para uso y almacenamiento de explosivos. Solo si la operación los utiliza.",
+      "norma": "Ley de control de explosivos / reglamentos SUCAMEC",
+      "dependeDe": ["RUC", "PLAN_SEG", "CONTRATO"],
+      "desbloquea": [],
+      "anexosReferenciales": [
+        "Plan de polvorín",
+        "Personal manipulación calificado",
+        "Croquis de almacenamiento",
+        "Seguros y medidas de seguridad"
+      ],
+      "checklistTramite": [
+        "Confirmar necesidad real de explosivos",
+        "Preparar expediente SUCAMEC",
+        "Acondicionar polvorín según norma",
+        "Capacitar personal autorizado"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — Explosivos",
+        "secciones": ["Tipo de autorización", "Polvorín", "Personal", "Vigencia"]
+      }
+    },
+    {
+      "id": "doc-padron",
+      "codigo": "PADRON",
+      "nombre": "Padrón de trabajadores",
+      "categoria": "laboral",
+      "etapa": "laboral",
+      "requerido": true,
+      "validezMeses": 6,
+      "prioridad": 9,
+      "peso": 5,
+      "entidad": "Empresa / MTPE",
+      "url": null,
+      "campoDiagnostico": "numTrabajadores",
+      "descripcion": "Listado actualizado de personal de la operación minera.",
+      "norma": "Normativa laboral / obligaciones del empleador",
+      "dependeDe": ["RUC"],
+      "desbloquea": ["ESSALUD"],
+      "anexosReferenciales": [
+        "DNI de cada trabajador",
+        "Contratos o acuerdos de trabajo",
+        "Registro de asistencia"
+      ],
+      "checklistTramite": [
+        "Elaborar padrón con datos mínimos",
+        "Actualizar ingresos y ceses",
+        "Cruzar con planillas y ESSALUD",
+        "Archivar versión mensual"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — Padrón",
+        "secciones": ["N° trabajadores", "Cargos", "Fecha de corte", "Responsable de RR.HH."]
+      }
+    },
+    {
+      "id": "doc-essalud",
+      "codigo": "ESSALUD",
+      "nombre": "Afiliación ESSALUD / SCTR",
+      "categoria": "laboral",
+      "etapa": "laboral",
+      "requerido": true,
+      "validezMeses": 12,
+      "prioridad": 10,
+      "peso": 5,
+      "entidad": "ESSALUD / Aseguradora",
+      "url": null,
+      "campoDiagnostico": "numTrabajadores",
+      "descripcion": "Cobertura de salud y seguro complementario de trabajo de riesgo cuando corresponda.",
+      "norma": "Ley de ESSALUD / SCTR",
+      "dependeDe": ["RUC", "PADRON"],
+      "desbloquea": [],
+      "anexosReferenciales": [
+        "Póliza SCTR vigente",
+        "Constancias de afiliación",
+        "Comprobantes de pago de aportes"
+      ],
+      "checklistTramite": [
+        "Afiliar personal según régimen",
+        "Contratar SCTR si aplica por riesgo",
+        "Verificar pagos al día",
+        "Renovar pólizas a tiempo"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Ficha de expediente — ESSALUD/SCTR",
+        "secciones": ["Afiliados", "Póliza SCTR", "Vigencia", "Corredor / aseguradora"]
+      }
+    },
+    {
+      "id": "doc-exp-completo",
+      "codigo": "EXPEDIENTE",
+      "nombre": "Expediente maestro de formalización",
+      "categoria": "referencial",
+      "etapa": "base",
+      "requerido": true,
+      "validezMeses": 6,
+      "prioridad": 0,
+      "peso": 0,
+      "entidad": "FormalizaAI (generado)",
+      "url": null,
+      "campoDiagnostico": null,
+      "esReferencial": true,
+      "autoGenerado": true,
+      "descripcion": "Índice unificado del expediente: documentos base, anexos y estado de cada pieza.",
+      "norma": "Estructura operativa FormalizaAI",
+      "dependeDe": [],
+      "desbloquea": [],
+      "anexosReferenciales": [
+        "Índice de documentos",
+        "Matriz de dependencias",
+        "Cronograma de trámites",
+        "Resumen de costos y plazos"
+      ],
+      "checklistTramite": [
+        "Generar expediente tras diagnóstico",
+        "Actualizar estados al cargar documentos",
+        "Exportar índice para presentaciones",
+        "Revisar dependencias bloqueadas"
+      ],
+      "plantillaExpediente": {
+        "titulo": "Expediente maestro — FormalizaAI",
+        "secciones": ["Portada", "Índice", "Estado por documento", "Plan 90 días", "Alertas de vigencia"]
+      }
+    }
+  ],
+  "reglasReferenciales": {
+    "generarTrasDiagnostico": true,
+    "incluirAnexosDeFaltantes": true,
+    "ordenPorPrioridadYDependencias": true,
+    "alertarVencimientoDias": [60, 30, 15],
+    "paqueteMinimoBase": ["RUC", "REINFO", "CONTRATO", "IGAFOM", "PLAN_SEG"]
+  },
+  "alertasPlantilla": [
+    {
+      "tipo": "vencimiento",
+      "titulo": "Documento próximo a vencer",
+      "severidad": "warning",
+      "icon": "clock"
+    },
+    {
+      "tipo": "pendiente",
+      "titulo": "Documento pendiente",
+      "severidad": "danger",
+      "icon": "document"
+    },
+    {
+      "tipo": "dependencia",
+      "titulo": "Bloqueado por dependencia",
+      "severidad": "info",
+      "icon": "link"
+    },
+    {
+      "tipo": "obligacion",
+      "titulo": "Nueva obligación",
+      "severidad": "info",
+      "icon": "bell"
+    },
+    {
+      "tipo": "referencial",
+      "titulo": "Expediente actualizado",
+      "severidad": "info",
+      "icon": "folder"
+    }
+  ]
+}

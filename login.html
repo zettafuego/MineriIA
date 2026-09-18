@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Inicia sesión en FormalizaAI" />
+  <title>Ingresar · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50: '#f0fdfa', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    // Aplicar tema antes del paint
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  </script>
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem">
+      <div class="brand-mark">FA</div>
+      <div>
+        <div class="brand-text">FormalizaAI</div>
+        <div class="brand-sub">Formalización minera inteligente</div>
+      </div>
+      <button type="button" class="btn-icon" data-theme-toggle aria-label="Cambiar tema" style="margin-left:auto">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/>
+        </svg>
+      </button>
+    </div>
+
+    <h1 class="page-title" style="font-size:1.35rem">Accede a tu cuenta</h1>
+    <p class="page-subtitle" style="margin-bottom:1.25rem">
+      Conoce qué necesitas para formalizar tu operación minera.
+    </p>
+
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab active" id="tab-login" role="tab">Entrar</button>
+      <button type="button" class="auth-tab" id="tab-register" role="tab">Crear cuenta</button>
+    </div>
+
+    <!-- Login -->
+    <div id="panel-login">
+      <form id="form-login" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email</label>
+          <input class="form-input" type="email" id="login-email" name="email" autocomplete="username" required placeholder="tu@correo.pe" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-password">Contraseña</label>
+          <input class="form-input" type="password" id="login-password" name="password" autocomplete="current-password" required placeholder="••••••••" minlength="6" />
+        </div>
+        <p class="form-error" id="login-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Entrar</button>
+      </form>
+    </div>
+
+    <!-- Registro -->
+    <div id="panel-register" class="hidden">
+      <form id="form-register" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="reg-nombre">Nombre completo</label>
+          <input class="form-input" type="text" id="reg-nombre" name="nombre" required placeholder="Ej. Ana Torres" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email</label>
+          <input class="form-input" type="email" id="reg-email" name="email" required placeholder="tu@correo.pe" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Contraseña</label>
+          <input class="form-input" type="password" id="reg-password" name="password" required minlength="6" placeholder="Mínimo 6 caracteres" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-region">Región</label>
+          <select class="form-input" id="reg-region" name="region">
+            <option value="Puno">Puno</option>
+            <option value="Arequipa">Arequipa</option>
+            <option value="Cusco">Cusco</option>
+            <option value="Madre de Dios">Madre de Dios</option>
+            <option value="Ayacucho">Ayacucho</option>
+            <option value="Apurímac">Apurímac</option>
+            <option value="La Libertad">La Libertad</option>
+            <option value="Otra">Otra</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-actividad">Actividad</label>
+          <select class="form-input" id="reg-actividad" name="actividad">
+            <option value="Pequeña Minería">Pequeña Minería</option>
+            <option value="Minería Artesanal">Minería Artesanal</option>
+            <option value="Consultoría Minera">Consultoría Minera</option>
+          </select>
+        </div>
+        <p class="form-error" id="register-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary w-full btn-lg">Crear cuenta</button>
+      </form>
+    </div>
+
+    <div class="demo-box">
+      <strong>Demo:</strong> <code>carlos@mineria.pe</code> / <code>demo1234</code>
+      · <a href="#" id="fill-demo">Autocompletar</a>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/pages/login.js"></script>
+  <script>
+    document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => UI.toggleTheme());
+    });
+  </script>
+</body>
+</html>

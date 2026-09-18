@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asistente IA · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div id="app-root">
+    <div class="flex-between" style="flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem">
+      <div>
+        <h1 class="page-title">Asistente IA</h1>
+        <p class="page-subtitle" style="margin:0">
+          Conectado a la API de xAI (Grok) con contexto de tu diagnóstico y documentos.
+        </p>
+      </div>
+      <div class="flex gap-2 items-center" style="flex-wrap:wrap">
+        <span id="chat-api-status" class="chat-api-badge is-offline" title="Estado de la API">…</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-clear-chat">Limpiar chat</button>
+      </div>
+    </div>
+
+    <div class="card chat-layout">
+      <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+      <div id="chat-suggestions" class="chat-suggestions"></div>
+      <form id="chat-form" class="chat-input-bar">
+        <input
+          class="form-input"
+          id="chat-input"
+          type="text"
+          placeholder="Ej. ¿Qué es el IGAFOM?"
+          autocomplete="off"
+          maxlength="2000"
+          aria-label="Escribe tu pregunta"
+        />
+        <button type="submit" class="btn btn-primary" aria-label="Enviar">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/>
+          </svg>
+          Enviar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/documents.js"></script>
+  <script src="assets/js/diagnosis.js"></script>
+  <script src="assets/js/chat.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Layout.render({
+      page: 'chat',
+      breadcrumbs: [
+        { label: 'Inicio', href: 'dashboard.html' },
+        { label: 'Asistente IA' },
+      ],
+    });
+  </script>
+  <script src="assets/js/pages/chat-page.js"></script>
+</body>
+</html>

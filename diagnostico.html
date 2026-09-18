@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnóstico · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div id="app-root">
+    <h1 class="page-title" id="wizard-title">Diagnóstico Inteligente</h1>
+    <p class="page-subtitle" id="wizard-desc">Responde con honestidad para obtener tu plan de formalización.</p>
+
+    <!-- Wizard -->
+    <div id="panel-wizard" class="card animate-fade-up">
+      <div class="card-body">
+        <div class="wizard-progress-wrap">
+          <div class="wizard-step-label">
+            <span id="step-label">Pregunta 1 de 10</span>
+            <span class="text-muted">Progreso</span>
+          </div>
+          <div class="progress-track progress-lg">
+            <div class="progress-bar" id="wizard-bar" style="width:0%"></div>
+          </div>
+        </div>
+
+        <h2 id="question-text" style="font-size:1.2rem;font-weight:650;margin:0 0 0.5rem;letter-spacing:-0.02em">
+          Cargando…
+        </h2>
+        <p id="question-help" class="text-secondary" style="font-size:0.9rem;margin:0 0 1.25rem"></p>
+
+        <div id="options-grid" class="option-grid" role="listbox" aria-label="Opciones"></div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary" id="btn-prev" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+            </svg>
+            Anterior
+          </button>
+          <button type="button" class="btn btn-primary" id="btn-next">
+            Siguiente
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analizando -->
+    <div id="panel-analyzing" class="card hidden">
+      <div class="card-body" style="text-align:center;padding:3rem 1.5rem">
+        <div class="spinner" style="margin-bottom:1.25rem"></div>
+        <h2 style="font-size:1.2rem;margin:0 0 0.5rem">Analizando con FormalizaAI…</h2>
+        <p id="analyze-status" class="text-secondary" style="margin:0 0 1.5rem">Procesando respuestas…</p>
+        <div class="progress-track progress-lg" style="max-width:320px;margin:0 auto">
+          <div class="progress-bar" id="analyze-bar" style="width:0%"></div>
+        </div>
+        <p class="text-muted" style="font-size:0.8rem;margin-top:1.25rem">
+          Generamos porcentaje, checklist, riesgo, tiempo y costo estimado.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/documents.js"></script>
+  <script src="assets/js/diagnosis.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Layout.render({
+      page: 'diagnostico',
+      breadcrumbs: [
+        { label: 'Inicio', href: 'dashboard.html' },
+        { label: 'Diagnóstico' },
+      ],
+    });
+  </script>
+  <script src="assets/js/pages/diagnostico.js"></script>
+</body>
+</html>
