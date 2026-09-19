@@ -38,6 +38,7 @@ PUBLIC_PAGES = {
     "/documentos.html",
     "/chat.html",
     "/perfil.html",
+    "/institucional.html",
 }
 
 

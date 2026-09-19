@@ -1,8 +1,8 @@
 # FormalizaAI — MVP
 
-Aplicación web para pequeños productores mineros y consultores en Perú. Ayuda a saber **exactamente qué falta para formalizarse**, con diagnóstico, checklist, alertas y asistente IA simulado.
+Aplicación web de orientación para pequeños productores mineros y consultores en Perú. Ayuda a identificar brechas de formalización mediante diagnóstico, checklist, alertas y gestión documental.
 
-> No es una landing: es un MVP funcional con datos en JSON + LocalStorage, listo para validar con usuarios reales y migrar a Node.js o Firebase.
+> Es un MVP institucional independiente. No representa a una entidad pública, no verifica registros oficiales en tiempo real y no sustituye asesoría legal o técnica.
 
 ## Stack
 
@@ -10,7 +10,9 @@ Aplicación web para pequeños productores mineros y consultores en Perú. Ayuda
 - Tailwind-inspired design system (CSS propio + tokens)
 - Chart.js (gráficos)
 - Heroicons (SVG inline)
-- Backend simulado: JSON local + LocalStorage
+- Supabase Auth + Postgres con Row Level Security
+- Vercel para hosting y funciones de servidor
+- JSON local para catálogos y respuestas de orientación sin IA
 
 ## Estructura
 
@@ -21,6 +23,7 @@ FormalizaAI/
 ├── dashboard.html
 ├── diagnostico.html
 ├── chat.html
+├── institucional.html      # Metodología, fuentes y limitaciones
 ├── perfil.html
 ├── README.md
 └── assets/
@@ -102,12 +105,12 @@ Los usuarios JSON permanecen únicamente como datos heredados del prototipo loca
 
 ## Flujo de usuario
 
-1. **Login / Registro** → sesión en LocalStorage  
+1. **Login / Registro** → Supabase Auth y perfil privado
 2. **Dashboard** → % formalización, alertas, checklist, gráficos y resumen documental  
 3. **Diagnóstico** → wizard de 10 preguntas  
 4. **Análisis simulado** → genera %, riesgo, tiempo, costo, próximos pasos **y sincroniza el portfolio documental**  
 5. **Documentos** → catálogo base, dependencias, anexos referenciales automáticos, plan 90 días y expediente exportable  
-6. **Chat IA** → respuestas predefinidas (IGAFOM, RUC, REINFO, etc.)  
+6. **Asistente** → respuestas locales; xAI es opcional y requiere `XAI_API_KEY`
 7. **Perfil** → editar datos y ver estado  
 
 ## Gestión documental (v2)
@@ -115,7 +118,7 @@ Los usuarios JSON permanecen únicamente como datos heredados del prototipo loca
 - **Catálogo base** (`assets/json/documentos.json`): RUC, REINFO, contrato, IGAFOM, IA, seguridad, laboral, expediente maestro.  
 - **Dependencias**: p. ej. IGAFOM requiere RUC + REINFO + contrato; el sistema marca *bloqueados*.  
 - **Referenciales automáticos**: anexos, checklist de trámite, plantilla de ficha y plan 90 días al cerrar el diagnóstico.  
-- **Portfolio del usuario** en LocalStorage: estados manuales (pendiente / en proceso / completo / vencido).  
+- **Portfolio del usuario** sincronizado con Supabase y respaldo local por usuario.
 - **Exportar referencial**: copia texto del expediente maestro.  
 - **Plantillas PDF / DOCX**: fichas por documento y expediente completo (`TemplateService` + jsPDF + JSZip), con datos del titular, checklist y anexos.  
 
@@ -134,15 +137,15 @@ Prefijo `formalizaai_`:
 - `doc_expediente` — expediente referencial generado  
 - `chat_history` / `theme`  
 
-## Migración a backend real
+## Arquitectura actual
 
-| Capa actual | Reemplazo sugerido |
-|-------------|-------------------|
-| `assets/json/*` | API REST / Firestore |
-| `StorageService` | fetch + auth headers |
-| `AuthService` | JWT / Firebase Auth |
-| `DiagnosisEngine` | endpoint `/api/diagnose` o LLM |
-| `ChatService` | **Ya conectado** a xAI vía `server.py` → `/api/chat` |
+| Capa | Implementación |
+|------|----------------|
+| Identidad | Supabase Auth |
+| Persistencia | Supabase Postgres + RLS |
+| Catálogos | JSON estático versionado |
+| Diagnóstico | Motor de reglas en el navegador + persistencia remota |
+| Chat | Fallback local; xAI opcional mediante función de servidor |
 
 Los módulos ya separan **UI · dominio · persistencia** para facilitar el cambio sin reescribir pantallas.
 
@@ -154,4 +157,4 @@ Los módulos ya separan **UI · dominio · persistencia** para facilitar el camb
 
 ---
 
-Hecho para validación de startup · FormalizaAI · Perú
+MVP independiente para validación institucional · FormalizaAI · Perú

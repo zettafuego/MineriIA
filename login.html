@@ -34,12 +34,31 @@
   </script>
 </head>
 <body class="auth-page">
-  <div class="auth-card">
+  <main class="auth-shell">
+    <section class="auth-intro" aria-label="Presentación de FormalizaAI">
+      <div class="institutional-kicker" style="color:#f4d28a">MVP de orientación digital</div>
+      <h1>Una ruta clara hacia la formalización minera.</h1>
+      <p>
+        FormalizaAI organiza requisitos, identifica brechas documentales y propone un plan de acción
+        para pequeños productores y minería artesanal en el Perú.
+      </p>
+      <div class="auth-proof-list">
+        <div class="auth-proof"><span>✓</span> Diagnóstico guiado en diez preguntas</div>
+        <div class="auth-proof"><span>✓</span> Expediente y plan de trabajo referencial</div>
+        <div class="auth-proof"><span>✓</span> Información privada y separada por usuario</div>
+      </div>
+      <p style="margin-top:auto;padding-top:2rem;font-size:0.76rem;max-width:520px">
+        Prototipo independiente de validación. No representa a una entidad pública ni sustituye la
+        revisión de la autoridad competente o de un profesional especializado.
+      </p>
+    </section>
+    <section class="auth-form-panel">
+    <div class="auth-card">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem">
       <div class="brand-mark">FA</div>
       <div>
         <div class="brand-text">FormalizaAI</div>
-        <div class="brand-sub">Formalización minera inteligente</div>
+        <div class="brand-sub">Orientación para la formalización minera</div>
       </div>
       <button type="button" class="btn-icon" data-theme-toggle aria-label="Cambiar tema" style="margin-left:auto">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
@@ -48,9 +67,10 @@
       </button>
     </div>
 
-    <h1 class="page-title" style="font-size:1.35rem">Accede a tu cuenta</h1>
+    <div class="institutional-kicker" style="margin-bottom:0.65rem">Acceso seguro</div>
+    <h1 class="page-title" style="font-size:1.5rem">Accede a tu cuenta</h1>
     <p class="page-subtitle" style="margin-bottom:1.25rem">
-      Conoce qué necesitas para formalizar tu operación minera.
+      Revisa tu avance y continúa tu ruta de formalización.
     </p>
 
     <div class="auth-tabs" role="tablist">
@@ -116,10 +136,15 @@
     </div>
 
     <div class="demo-box">
-      <strong>MVP conectado:</strong> crea una cuenta para guardar tu avance de forma privada.
-      · <a href="#" id="fill-demo">Crear cuenta</a>
+      <strong>Entorno de demostración:</strong> utiliza datos de prueba y evita ingresar información
+      sensible. · <a href="#" id="fill-demo">Crear cuenta</a>
     </div>
-  </div>
+    <p style="margin:1rem 0 0;text-align:center;font-size:0.74rem;color:var(--text-muted)">
+      Al continuar aceptas el uso de tus datos para esta demostración funcional.
+    </p>
+    </div>
+    </section>
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
   <script src="assets/js/config.js"></script>

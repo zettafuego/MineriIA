@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Metodología, fuentes y alcance del MVP FormalizaAI" />
+  <title>Metodología · FormalizaAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } } };
+  </script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script>
+    try {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div id="app-root">
+    <section class="hero-panel">
+      <div class="institutional-kicker" style="margin-bottom:0.55rem">Transparencia del MVP</div>
+      <h1 class="page-title">Metodología y alcance</h1>
+      <p class="page-subtitle" style="max-width:760px;margin-bottom:0">
+        Conoce cómo se construye el diagnóstico, qué fuentes orientan el contenido y cuáles son los límites de esta herramienta.
+      </p>
+    </section>
+
+    <div class="grid-2 mt-3" id="metodologia">
+      <section class="card">
+        <div class="card-body">
+          <h2 class="section-title">Cómo se genera el diagnóstico</h2>
+          <div class="method-step">
+            <span class="method-number">01</span>
+            <div><strong>Levantamiento</strong><div class="text-secondary" style="font-size:0.84rem">Diez preguntas recogen el estado declarado de registros, permisos y documentos.</div></div>
+          </div>
+          <div class="method-step">
+            <span class="method-number">02</span>
+            <div><strong>Evaluación de brechas</strong><div class="text-secondary" style="font-size:0.84rem">Cada respuesta se contrasta con un catálogo referencial de requisitos y dependencias.</div></div>
+          </div>
+          <div class="method-step">
+            <span class="method-number">03</span>
+            <div><strong>Priorización</strong><div class="text-secondary" style="font-size:0.84rem">Las brechas se ordenan por criticidad para proponer próximos pasos y un plan de 90 días.</div></div>
+          </div>
+          <div class="method-step">
+            <span class="method-number">04</span>
+            <div><strong>Seguimiento</strong><div class="text-secondary" style="font-size:0.84rem">El usuario actualiza su expediente y conserva su avance en una cuenta privada.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="alcance">
+        <div class="card-body">
+          <h2 class="section-title">Alcance y limitaciones</h2>
+          <div class="institutional-notice">
+            <span aria-hidden="true">!</span>
+            <div><strong>No es una resolución administrativa.</strong> El resultado no acredita formalización, vigencia de registros ni cumplimiento legal.</div>
+          </div>
+          <ul class="text-secondary" style="padding-left:1.1rem;font-size:0.88rem;line-height:1.75;margin:1rem 0 0">
+            <li>La información proviene de respuestas declaradas por el usuario.</li>
+            <li>Los costos y plazos son estimaciones referenciales.</li>
+            <li>El MVP aún no consulta registros oficiales en tiempo real.</li>
+            <li>Las plantillas generadas requieren revisión antes de cualquier trámite.</li>
+            <li>No sustituye asesoría legal, técnica, ambiental o administrativa.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <section class="card mt-3" id="fuentes">
+      <div class="card-body">
+        <div class="institutional-kicker" style="margin-bottom:0.55rem">Referencias públicas</div>
+        <h2 class="section-title">Entidades y fuentes de orientación</h2>
+        <p class="text-secondary" style="font-size:0.88rem;margin:0 0 1rem">
+          El contenido se organiza a partir de información pública. Los enlaces llevan a los portales institucionales; no implican integración ni aval.
+        </p>
+        <div class="source-grid">
+          <a class="source-card" href="https://www.gob.pe/minem" target="_blank" rel="noopener noreferrer">
+            <h3>Ministerio de Energía y Minas</h3>
+            <p>Orientación sectorial, normativa y servicios vinculados a la actividad minera.</p>
+          </a>
+          <a class="source-card" href="https://www.sunat.gob.pe" target="_blank" rel="noopener noreferrer">
+            <h3>SUNAT</h3>
+            <p>Información tributaria, RUC y obligaciones del contribuyente.</p>
+          </a>
+          <a class="source-card" href="https://www.gob.pe/sucamec" target="_blank" rel="noopener noreferrer">
+            <h3>SUCAMEC</h3>
+            <p>Información pública relacionada con insumos fiscalizados y autorizaciones aplicables.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card mt-3">
+      <div class="card-body">
+        <h2 class="section-title">Tratamiento de datos en esta demostración</h2>
+        <p class="text-secondary" style="font-size:0.88rem;margin:0">
+          La cuenta, el diagnóstico y el expediente se almacenan en una base de datos con acceso restringido por usuario. Para esta etapa se recomienda usar datos de prueba y no adjuntar información sensible, reservada o confidencial.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/diagnosis.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    Layout.render({
+      page: 'institucional',
+      breadcrumbs: [
+        { label: 'Inicio', href: 'dashboard.html' },
+        { label: 'Metodología' },
+      ],
+    });
+    App.boot({ auth: true });
+  </script>
+</body>
+</html>

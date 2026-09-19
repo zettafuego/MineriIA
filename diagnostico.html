@@ -23,8 +23,14 @@
 </head>
 <body>
   <div id="app-root">
-    <h1 class="page-title" id="wizard-title">Diagnóstico Inteligente</h1>
-    <p class="page-subtitle" id="wizard-desc">Responde con honestidad para obtener tu plan de formalización.</p>
+    <div class="institutional-kicker" style="margin-bottom:0.55rem">Evaluación autodeclarada</div>
+    <h1 class="page-title" id="wizard-title">Diagnóstico de situación</h1>
+    <p class="page-subtitle" id="wizard-desc">Responde según tu situación actual para obtener una ruta de trabajo referencial.</p>
+
+    <div class="institutional-notice" style="margin-bottom:1rem">
+      <span aria-hidden="true">ⓘ</span>
+      <div>Las respuestas no se verifican contra registros públicos en esta versión. Evita ingresar datos personales o información confidencial.</div>
+    </div>
 
     <!-- Wizard -->
     <div id="panel-wizard" class="card animate-fade-up">
@@ -67,7 +73,7 @@
     <div id="panel-analyzing" class="card hidden">
       <div class="card-body" style="text-align:center;padding:3rem 1.5rem">
         <div class="spinner" style="margin-bottom:1.25rem"></div>
-        <h2 style="font-size:1.2rem;margin:0 0 0.5rem">Analizando con FormalizaAI…</h2>
+        <h2 style="font-size:1.2rem;margin:0 0 0.5rem">Generando diagnóstico…</h2>
         <p id="analyze-status" class="text-secondary" style="margin:0 0 1.5rem">Procesando respuestas…</p>
         <div class="progress-track progress-lg" style="max-width:320px;margin:0 auto">
           <div class="progress-bar" id="analyze-bar" style="width:0%"></div>
