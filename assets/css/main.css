@@ -400,6 +400,12 @@ img {
   white-space: nowrap;
 }
 
+.btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
