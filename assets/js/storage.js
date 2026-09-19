@@ -15,7 +15,7 @@ const StorageService = (() => {
     CHECKLIST: `${PREFIX}checklist`,
     ALERTAS: `${PREFIX}alertas`,
     CHAT_HISTORY: `${PREFIX}chat_history`,
-    THEME: `${PREFIX}theme`,
+    THEME: `${PREFIX}theme_v2`,
     PROGRESS: `${PREFIX}progress`,
     DOC_PORTFOLIO: `${PREFIX}doc_portfolio`,
     DOC_EXPEDIENTE: `${PREFIX}doc_expediente`,

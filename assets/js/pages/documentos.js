@@ -14,6 +14,9 @@
   async function init() {
     UI.showLoading('Cargando documentos…');
     try {
+      if (window.SupabaseService?.hydrateUserState) {
+        await SupabaseService.hydrateUserState();
+      }
       catalog = await DocumentService.getCatalog();
       portfolio = await DocumentService.ensurePortfolio();
       fillCategoryFilter();

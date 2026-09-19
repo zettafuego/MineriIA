@@ -53,6 +53,9 @@
         UI.toast(result.error, 'error');
         return;
       }
+      if (window.SupabaseService?.hydrateUserState) {
+        await SupabaseService.hydrateUserState();
+      }
       UI.toast(`Bienvenido, ${result.user.nombre}`, 'success');
       setTimeout(() => {
         window.location.href = 'dashboard.html';

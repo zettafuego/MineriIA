@@ -2,8 +2,29 @@
  * FormalizaAI — Dashboard
  */
 
-(function () {
+(async function () {
   App.boot({ auth: true });
+
+  if (window.SupabaseService?.hydrateUserState) {
+    UI.showLoading('Recuperando tu avance…');
+    try {
+      const remoteState = await SupabaseService.hydrateUserState();
+      if (
+        remoteState?.diagnosis &&
+        window.DocumentService?.syncFromDiagnosis &&
+        (!remoteState.portfolio?.items?.length || remoteState.portfolio?.source === 'manual')
+      ) {
+        await DocumentService.syncFromDiagnosis(
+          remoteState.diagnosis,
+          remoteState.diagnosis.respuestas || {}
+        );
+      }
+    } catch (err) {
+      console.warn('[Dashboard] No se pudo recuperar el estado remoto', err);
+    } finally {
+      UI.hideLoading();
+    }
+  }
 
   const user = AuthService.getCurrentUser();
   const resultado = DiagnosisEngine.getResultado();
@@ -25,6 +46,20 @@
   const pct = resultado?.porcentaje ?? user.porcentaje ?? 0;
   document.getElementById('dash-pct-label').textContent = `${pct}%`;
   document.getElementById('dash-progress').style.width = `${pct}%`;
+  const pctMirror = document.getElementById('ring-pct-mirror');
+  if (pctMirror) pctMirror.textContent = `${pct}%`;
+  document.querySelectorAll('[data-journey-min]').forEach((step) => {
+    const min = Number(step.dataset.journeyMin || 0);
+    const next = Number(step.dataset.journeyNext || 101);
+    step.classList.toggle('completed', pct >= min);
+    step.classList.toggle('current', pct >= min && pct < next);
+  });
+  const updatedEl = document.getElementById('dash-last-update');
+  if (updatedEl && resultado?.fecha) {
+    updatedEl.textContent = new Intl.DateTimeFormat('es-PE', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    }).format(new Date(resultado.fecha));
+  }
 
   // Próximo paso
   const next = resultado?.proximoPaso || {

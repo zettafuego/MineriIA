@@ -8,7 +8,7 @@ const UI = (() => {
 
   /* ---------- Theme ---------- */
   function getTheme() {
-    return get(keys.THEME, null) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    return get(keys.THEME, null) || 'light';
   }
 
   function applyTheme(theme) {

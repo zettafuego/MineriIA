@@ -26,8 +26,8 @@
   <script>
     // Aplicar tema antes del paint
     try {
-      const t = JSON.parse(localStorage.getItem('formalizaai_theme') || 'null');
-      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+      const t = JSON.parse(localStorage.getItem('formalizaai_theme_v2') || 'null');
+      if (t === 'dark') {
         document.documentElement.classList.add('dark');
       }
     } catch (_) {}

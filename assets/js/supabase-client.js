@@ -80,6 +80,22 @@ const SupabaseService = (() => {
     return data;
   }
 
+  async function getLatestDiagnosis() {
+    if (!client) return null;
+    const { data: authData } = await client.auth.getUser();
+    const userId = authData?.user?.id;
+    if (!userId) return null;
+    const { data, error } = await client
+      .from('diagnoses')
+      .select('resultado, respuestas, created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (error) throw error;
+    return data?.resultado || null;
+  }
+
   async function savePortfolio(portfolio) {
     if (!client || !portfolio) return null;
     const { data: authData } = await client.auth.getUser();
@@ -97,7 +113,62 @@ const SupabaseService = (() => {
     return data;
   }
 
-  return { client, isConfigured, getProfile, saveProfile, saveDiagnosis, savePortfolio };
+  async function getPortfolio() {
+    if (!client) return null;
+    const { data: authData } = await client.auth.getUser();
+    const userId = authData?.user?.id;
+    if (!userId) return null;
+    const { data, error } = await client
+      .from('document_portfolios')
+      .select('portfolio, updated_at')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (error) throw error;
+    return data?.portfolio || null;
+  }
+
+  async function hydrateUserState() {
+    if (!client || !window.StorageService) return { diagnosis: null, portfolio: null };
+    const { keys, get, set } = window.StorageService;
+    const [remoteDiagnosis, remotePortfolio] = await Promise.all([
+      getLatestDiagnosis(),
+      getPortfolio(),
+    ]);
+
+    const localDiagnosis = get(keys.RESULTADO, null);
+    const remoteDate = Date.parse(remoteDiagnosis?.fecha || 0);
+    const localDate = Date.parse(localDiagnosis?.fecha || 0);
+    if (remoteDiagnosis && (!localDiagnosis || remoteDate >= localDate)) {
+      set(keys.RESULTADO, remoteDiagnosis);
+      set(keys.RESPUESTAS, remoteDiagnosis.respuestas || {});
+      set(keys.CHECKLIST, remoteDiagnosis.checklist || []);
+      set(keys.ALERTAS, remoteDiagnosis.alertas || []);
+      set(keys.PROGRESS, {
+        porcentaje: remoteDiagnosis.porcentaje || 0,
+        estado: remoteDiagnosis.estado || 'Inicio',
+        updatedAt: remoteDiagnosis.fecha || new Date().toISOString(),
+      });
+    }
+
+    if (remotePortfolio?.items?.length) {
+      set(keys.DOC_PORTFOLIO, remotePortfolio);
+      if (remotePortfolio.expediente) set(keys.DOC_EXPEDIENTE, remotePortfolio.expediente);
+    }
+
+    return { diagnosis: remoteDiagnosis, portfolio: remotePortfolio };
+  }
+
+  return {
+    client,
+    isConfigured,
+    getProfile,
+    saveProfile,
+    saveDiagnosis,
+    getLatestDiagnosis,
+    savePortfolio,
+    getPortfolio,
+    hydrateUserState,
+  };
 })();
 
 window.SupabaseService = SupabaseService;
