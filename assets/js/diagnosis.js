@@ -192,6 +192,14 @@ const DiagnosisEngine = (() => {
       });
     }
 
+    if (window.SupabaseService?.isConfigured?.()) {
+      try {
+        await SupabaseService.saveDiagnosis(resultado);
+      } catch (err) {
+        console.warn('[Diagnosis] No se pudo guardar el diagnóstico remoto', err);
+      }
+    }
+
     return resultado;
   }
 

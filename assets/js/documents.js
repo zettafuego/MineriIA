@@ -36,6 +36,13 @@ const DocumentService = (() => {
 
   let catalogCache = null;
 
+  function persistRemote(portfolio) {
+    if (!window.SupabaseService?.isConfigured?.() || !portfolio) return;
+    SupabaseService.savePortfolio(portfolio).catch((err) =>
+      console.warn('[Documents] No se pudo guardar el portfolio remoto', err)
+    );
+  }
+
   async function getCatalog(force = false) {
     if (catalogCache && !force) return catalogCache;
     try {
@@ -204,6 +211,7 @@ const DocumentService = (() => {
 
     set(keys.DOC_PORTFOLIO, portfolio);
     set(keys.DOC_EXPEDIENTE, portfolio.expediente);
+    persistRemote(portfolio);
     return portfolio;
   }
 
@@ -495,6 +503,8 @@ const DocumentService = (() => {
     set(keys.DOC_PORTFOLIO, portfolio);
     set(keys.DOC_EXPEDIENTE, portfolio.expediente);
 
+    persistRemote(portfolio);
+
     return { ok: true, portfolio, item };
   }
 
@@ -517,6 +527,7 @@ const DocumentService = (() => {
     enrichBlocking(portfolio);
     portfolio.porcentajeDocs = computeDocPercent(portfolio.items);
     set(keys.DOC_PORTFOLIO, portfolio);
+    persistRemote(portfolio);
     return { ok: true, item, portfolio };
   }
 
@@ -539,6 +550,7 @@ const DocumentService = (() => {
       set(keys.DOC_EXPEDIENTE, portfolio.expediente);
       set(keys.DOC_PORTFOLIO, portfolio);
     }
+    persistRemote(portfolio);
     return { ok: true, item };
   }
 
@@ -554,6 +566,7 @@ const DocumentService = (() => {
     portfolio.syncedAt = new Date().toISOString();
     set(keys.DOC_PORTFOLIO, portfolio);
     set(keys.DOC_EXPEDIENTE, portfolio.expediente);
+    persistRemote(portfolio);
     return portfolio;
   }
 

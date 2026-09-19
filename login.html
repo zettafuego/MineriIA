@@ -87,7 +87,7 @@
         </div>
         <div class="form-group">
           <label class="form-label" for="reg-password">Contraseña</label>
-          <input class="form-input" type="password" id="reg-password" name="password" required minlength="6" placeholder="Mínimo 6 caracteres" />
+          <input class="form-input" type="password" id="reg-password" name="password" required minlength="8" placeholder="Mínimo 8 caracteres" />
         </div>
         <div class="form-group">
           <label class="form-label" for="reg-region">Región</label>
@@ -116,11 +116,14 @@
     </div>
 
     <div class="demo-box">
-      <strong>Demo:</strong> <code>carlos@mineria.pe</code> / <code>demo1234</code>
-      · <a href="#" id="fill-demo">Autocompletar</a>
+      <strong>MVP conectado:</strong> crea una cuenta para guardar tu avance de forma privada.
+      · <a href="#" id="fill-demo">Crear cuenta</a>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/ui.js"></script>

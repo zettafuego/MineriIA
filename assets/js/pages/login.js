@@ -102,12 +102,10 @@
     }
   });
 
-  // Rellenar demo con un clic
+  // Acceso rapido al registro del MVP conectado
   document.getElementById('fill-demo')?.addEventListener('click', (e) => {
     e.preventDefault();
-    switchTab('login');
-    loginForm.email.value = 'carlos@mineria.pe';
-    loginForm.password.value = 'demo1234';
-    UI.toast('Credenciales demo cargadas', 'info');
+    switchTab('register');
+    registerForm.nombre.focus();
   });
 })();

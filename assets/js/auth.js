@@ -7,6 +7,28 @@
 const AuthService = (() => {
   const { keys, get, set, remove, loadJson } = StorageService;
 
+  function useRemoteAuth() {
+    return Boolean(window.SupabaseService?.isConfigured?.());
+  }
+
+  function buildRemoteSession(user, profile = {}) {
+    const metadata = user?.user_metadata || {};
+    return {
+      id: user.id,
+      nombre: profile.nombre || metadata.nombre || user.email?.split('@')[0] || 'Usuario',
+      email: user.email,
+      region: profile.region || metadata.region || '',
+      actividad: profile.actividad || metadata.actividad || '',
+      estado: profile.estado || 'Inicio',
+      porcentaje: profile.porcentaje || 0,
+      telefono: profile.telefono || '',
+      empresa: profile.empresa || '',
+      fechaRegistro: user.created_at?.slice(0, 10) || new Date().toISOString().slice(0, 10),
+      loginAt: new Date().toISOString(),
+      backend: 'supabase',
+    };
+  }
+
   /** Seed embebido: evita fallo de login si fetch/JSON no está disponible (file://, red, etc.) */
   const FALLBACK_USERS = [
     {
@@ -111,6 +133,26 @@ const AuthService = (() => {
    * @returns {{ ok: boolean, user?: object, error?: string }}
    */
   async function login(email, password) {
+    if (useRemoteAuth()) {
+      const normalized = String(email || '').trim().toLowerCase();
+      const { data, error } = await SupabaseService.client.auth.signInWithPassword({
+        email: normalized,
+        password,
+      });
+      if (error || !data?.user) {
+        return { ok: false, error: error?.message || 'Correo o contraseña incorrectos.' };
+      }
+      try {
+        const profile = (await SupabaseService.getProfile(data.user.id)) || {};
+        const session = buildRemoteSession(data.user, profile);
+        set(keys.SESSION, session);
+        return { ok: true, user: session };
+      } catch (err) {
+        await SupabaseService.client.auth.signOut();
+        return { ok: false, error: `No se pudo cargar el perfil: ${err.message}` };
+      }
+    }
+
     const users = await ensureUsers();
     const normalized = String(email || '').trim().toLowerCase();
     const user = users.find(
@@ -143,6 +185,45 @@ const AuthService = (() => {
    * Registro de nueva cuenta (solo LocalStorage).
    */
   async function register({ nombre, email, password, region, actividad }) {
+    if (useRemoteAuth()) {
+      const normalized = String(email || '').trim().toLowerCase();
+      if (!nombre?.trim() || !normalized || !password) {
+        return { ok: false, error: 'Completa todos los campos obligatorios.' };
+      }
+      if (password.length < 8) {
+        return { ok: false, error: 'La contraseña debe tener al menos 8 caracteres.' };
+      }
+
+      const { data, error } = await SupabaseService.client.auth.signUp({
+        email: normalized,
+        password,
+        options: { data: { nombre: nombre.trim(), region, actividad } },
+      });
+      if (error || !data?.user) {
+        return { ok: false, error: error?.message || 'No se pudo crear la cuenta.' };
+      }
+      if (!data.session) {
+        return {
+          ok: false,
+          pendingConfirmation: true,
+          error: 'Cuenta creada. Revisa tu correo para confirmarla antes de iniciar sesión.',
+        };
+      }
+
+      try {
+        const profile = await SupabaseService.saveProfile(data.user.id, {
+          nombre: nombre.trim(),
+          region,
+          actividad,
+        });
+        const session = buildRemoteSession(data.user, profile || {});
+        set(keys.SESSION, session);
+        return { ok: true, user: session };
+      } catch (err) {
+        return { ok: false, error: `Cuenta creada, pero el perfil falló: ${err.message}` };
+      }
+    }
+
     const users = await ensureUsers();
     const normalized = String(email || '').trim().toLowerCase();
 
@@ -191,15 +272,30 @@ const AuthService = (() => {
     return { ok: true, user: session };
   }
 
-  function logout() {
-    remove(keys.SESSION);
-    window.location.href = 'login.html';
+  async function logout() {
+    try {
+      if (useRemoteAuth()) await SupabaseService.client.auth.signOut();
+    } finally {
+      remove(keys.SESSION);
+      window.location.href = 'login.html';
+    }
   }
 
   /** Actualiza campos del usuario en sesión y en el listado local */
   async function updateProfile(partial) {
     const session = getSession();
     if (!session) return { ok: false, error: 'Sin sesión.' };
+
+    if (useRemoteAuth() && session.backend === 'supabase') {
+      try {
+        const updated = await SupabaseService.saveProfile(session.id, { ...session, ...partial });
+        const nextSession = { ...session, ...partial, ...updated, email: session.email };
+        set(keys.SESSION, nextSession);
+        return { ok: true, user: nextSession };
+      } catch (err) {
+        return { ok: false, error: err.message || 'No se pudo actualizar el perfil.' };
+      }
+    }
 
     const users = await ensureUsers();
     const idx = users.findIndex((u) => u.id === session.id);

@@ -21,9 +21,22 @@ const StorageService = (() => {
     DOC_EXPEDIENTE: `${PREFIX}doc_expediente`,
   };
 
+  const GLOBAL_KEYS = new Set([keys.SESSION, keys.USERS, keys.THEME]);
+
+  function resolveKey(key) {
+    if (GLOBAL_KEYS.has(key)) return key;
+    try {
+      const raw = localStorage.getItem(keys.SESSION);
+      const userId = raw ? JSON.parse(raw)?.id : null;
+      return userId ? `${key}_${userId}` : key;
+    } catch (_) {
+      return key;
+    }
+  }
+
   function get(key, fallback = null) {
     try {
-      const raw = localStorage.getItem(key);
+      const raw = localStorage.getItem(resolveKey(key));
       if (raw === null) return fallback;
       return JSON.parse(raw);
     } catch (err) {
@@ -34,7 +47,7 @@ const StorageService = (() => {
 
   function set(key, value) {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(resolveKey(key), JSON.stringify(value));
       return true;
     } catch (err) {
       console.error('[Storage] Error al guardar', key, err);
@@ -43,11 +56,11 @@ const StorageService = (() => {
   }
 
   function remove(key) {
-    localStorage.removeItem(key);
+    localStorage.removeItem(resolveKey(key));
   }
 
   function clearAll() {
-    Object.values(keys).forEach((k) => localStorage.removeItem(k));
+    Object.values(keys).forEach((k) => localStorage.removeItem(resolveKey(k)));
   }
 
   /** Carga JSON remoto (assets) con caché opcional en memoria */

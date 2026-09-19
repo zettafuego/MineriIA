@@ -94,15 +94,11 @@ python -m http.server 8080
 
 Extensión “Live Server” sirve HTML/JSON, pero **no** el proxy `/api/chat`. Usa `python server.py` para Grok.
 
-## Credenciales demo
+## Acceso al MVP
 
-| Email | Contraseña |
-|-------|------------|
-| carlos@mineria.pe | demo1234 |
-| maria@consultora.pe | demo1234 |
-| jose@artesanal.pe | demo1234 |
-
-También puedes crear una cuenta nueva desde **Crear cuenta**.
+El frontend está conectado a Supabase Auth. Crea una cuenta desde **Crear cuenta**;
+los perfiles, diagnósticos y expedientes se protegen por usuario mediante RLS.
+Los usuarios JSON permanecen únicamente como datos heredados del prototipo local.
 
 ## Flujo de usuario
 

@@ -29,6 +29,16 @@ PORT = int(os.environ.get("PORT", "8080"))
 XAI_BASE = os.environ.get("XAI_BASE_URL", "https://api.x.ai/v1").rstrip("/")
 DEFAULT_MODEL = os.environ.get("XAI_MODEL", "grok-4.5")
 MAX_BODY = 120_000  # bytes
+PUBLIC_PAGES = {
+    "/",
+    "/index.html",
+    "/login.html",
+    "/dashboard.html",
+    "/diagnostico.html",
+    "/documentos.html",
+    "/chat.html",
+    "/perfil.html",
+}
 
 
 def load_dotenv(path: Path) -> None:
@@ -83,10 +93,17 @@ class FormalizaHandler(SimpleHTTPRequestHandler):
         # Evitar caché agresiva en dev para JS/CSS
         if self.path.endswith((".js", ".css", ".html", ".json")):
             self.send_header("Cache-Control", "no-cache")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
         super().end_headers()
 
     def do_OPTIONS(self) -> None:
         if self.path.startswith("/api/"):
+            if not self._origin_is_allowed():
+                self.send_error(403, "Forbidden origin")
+                return
             self.send_response(204)
             self._cors()
             self.end_headers()
@@ -94,7 +111,8 @@ class FormalizaHandler(SimpleHTTPRequestHandler):
         self.send_error(404)
 
     def do_GET(self) -> None:
-        if self.path.split("?", 1)[0] == "/api/health":
+        path = self.path.split("?", 1)[0]
+        if path == "/api/health":
             self._json_response(
                 200,
                 {
@@ -107,17 +125,34 @@ class FormalizaHandler(SimpleHTTPRequestHandler):
                 },
             )
             return
-        return super().do_GET()
+        # Servir solo la superficie publica. Evita exponer .env, codigo del
+        # servidor, migraciones o archivos de configuracion desde ROOT.
+        if path in PUBLIC_PAGES or path.startswith("/assets/"):
+            return super().do_GET()
+        self.send_error(404, "Not found")
 
     def do_POST(self) -> None:
         path = self.path.split("?", 1)[0]
         if path == "/api/chat":
+            if not self._origin_is_allowed():
+                self._json_response(403, {"ok": False, "error": "forbidden_origin"})
+                return
             self._handle_chat()
             return
         self.send_error(404, "Not found")
 
+    def _origin_is_allowed(self) -> bool:
+        origin = (self.headers.get("Origin") or "").rstrip("/")
+        if not origin:
+            return True
+        host = self.headers.get("Host") or f"127.0.0.1:{PORT}"
+        return origin in {f"http://{host}", f"https://{host}"}
+
     def _cors(self) -> None:
-        self.send_header("Access-Control-Allow-Origin", "*")
+        origin = (self.headers.get("Origin") or "").rstrip("/")
+        if origin and self._origin_is_allowed():
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
